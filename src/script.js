@@ -2,6 +2,17 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+// Cursor Event Listener
+const cursor = {
+  x: 0,
+  y: 0,
+}
+
+window.addEventListener('mousemove', (e) => {
+  cursor.x = e.clientX / window.innerWidth - 0.5
+  cursor.y = -(e.clientY / window.innerHeight - 0.5)
+})
+
 // Scene
 const scene = new THREE.Scene()
 
@@ -22,21 +33,21 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.z = 3
 scene.add(camera)
 
-// TODO: Controls
-const canvas = document.querySelector('canvas.webgl')
-
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
-
 // Renderer
 const renderer = new THREE.WebGLRenderer({
-  canvas,
+  canvas: document.querySelector('canvas.webgl'),
 })
 renderer.setSize(window.innerWidth, window.innerHeight)
 
 // Animation
 function animate() {
-  controls.update()
+  // Update camera position based on cursor position.
+  camera.position.x = cursor.x * 10
+  camera.position.y = cursor.y * 10
+
+  // Look at red cube after position changes.
+  camera.lookAt(mesh.position)
+
   renderer.render(scene, camera)
   window.requestAnimationFrame(animate)
 }
