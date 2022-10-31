@@ -13,6 +13,11 @@ window.addEventListener('mousemove', (e) => {
   cursor.y = -(e.clientY / window.innerHeight - 0.5)
 })
 
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+}
+
 // Scene
 const scene = new THREE.Scene()
 
@@ -26,7 +31,7 @@ scene.add(mesh)
 // Camera
 const camera = new THREE.PerspectiveCamera(
   75,
-  window.innerWidth / window.innerHeight,
+  sizes.width / sizes.height,
   0.1,
   100
 )
@@ -37,7 +42,7 @@ scene.add(camera)
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('canvas.webgl'),
 })
-renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.setSize(sizes.width, sizes.height)
 
 // Animation
 function animate() {
@@ -54,3 +59,13 @@ function animate() {
 }
 
 animate()
+
+window.addEventListener('resize', () => {
+  sizes.width = window.innerWidth
+  sizes.height = window.innerHeight
+
+  camera.aspect = sizes.width / sizes.height
+  camera.updateProjectionMatrix()
+
+  renderer.setSize(sizes.width, sizes.height)
+})
