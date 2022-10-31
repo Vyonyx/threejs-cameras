@@ -41,9 +41,10 @@ renderer.setSize(window.innerWidth, window.innerHeight)
 
 // Animation
 function animate() {
-  // Update camera position based on cursor position.
-  camera.position.x = cursor.x * 10
-  camera.position.y = cursor.y * 10
+  // Use sin and cos to control camera swivel
+  camera.position.y = cursor.y * 3
+  camera.position.x = Math.sin(Math.PI * 2 * cursor.x) * 3
+  camera.position.z = Math.cos(Math.PI * 2 * cursor.x) * 3
 
   // Look at red cube after position changes.
   camera.lookAt(mesh.position)
